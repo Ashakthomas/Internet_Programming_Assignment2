@@ -144,7 +144,27 @@ const sampleCars = [
     pricePerDay: 3800,
     description: 'Feature-loaded premium SUV.',
     vin: 'VIN000010'
-  }
+  },
+  { carType: 'Coupe', brand: 'BMW', carModel: 'M4', image: 'm4.jpg', yearOfManufacture: 2022, mileage: '9,000km', fuelType: 'Petrol', available: true, pricePerDay: 4500, description: 'Luxury performance coupe.', vin: 'VIN000011' },
+
+  { carType: 'Convertible', brand: 'Audi', carModel: 'A5 Cabriolet', image: 'a5cabriolet.jpg', yearOfManufacture: 2021, mileage: '13,000km', fuelType: 'Petrol', available: true, pricePerDay: 4700, description: 'Stylish convertible cruiser.', vin: 'VIN000012' },
+
+  { carType: 'Pickup', brand: 'Chevrolet', carModel: 'Colorado', image: 'colorado.jpg', yearOfManufacture: 2020, mileage: '33,000km', fuelType: 'Diesel', available: true, pricePerDay: 2900, description: 'Strong pickup for all terrains.', vin: 'VIN000013' },
+
+  { carType: 'Van', brand: 'Toyota', carModel: 'Hiace', image: 'hiace.jpg', yearOfManufacture: 2018, mileage: '60,000km', fuelType: 'Diesel', available: true, pricePerDay: 2600, description: 'Spacious people mover.', vin: 'VIN000014' },
+
+  { carType: 'Sedan', brand: 'Skoda', carModel: 'Octavia', image: 'octavia.jpg', yearOfManufacture: 2022, mileage: '16,000km', fuelType: 'Petrol', available: true, pricePerDay: 2700, description: 'Smart European design.', vin: 'VIN000015' },
+
+  { carType: 'Hatchback', brand: 'Suzuki', carModel: 'Swift', image: 'swift.jpg', yearOfManufacture: 2021, mileage: '21,000km', fuelType: 'Petrol', available: true, pricePerDay: 1700, description: 'Affordable and agile.', vin: 'VIN000016' },
+  
+  { carType: 'SUV', brand: 'Mahindra', carModel: 'XUV700', image: 'xuv700.jpg', yearOfManufacture: 2023, mileage: '5,000km', fuelType: 'Diesel', available: true, pricePerDay: 3600, description: 'Loaded with features and power.', vin: 'VIN000017' },
+
+  { carType: 'Sedan', brand: 'Tata', carModel: 'Tigor', image: 'tigor.jpg', yearOfManufacture: 2020, mileage: '25,000km', fuelType: 'Petrol', available: true, pricePerDay: 2000, description: 'Compact Indian sedan.', vin: 'VIN000018' },
+  
+  { carType: 'Hatchback', brand: 'Renault', carModel: 'Kwid', image: 'kwid.jpg', yearOfManufacture: 2019, mileage: '35,000km', fuelType: 'Petrol', available: true, pricePerDay: 1600, description: 'Budget-friendly city car.', vin: 'VIN000019' },
+
+  { carType: 'SUV', brand: 'Jeep', carModel: 'Compass', image: 'compass.jpg', yearOfManufacture: 2021, mileage: '17,000km', fuelType: 'Diesel', available: true, pricePerDay: 3400, description: 'Rugged off-road SUV.', vin: 'VIN000020' }
+
 ];
 
 // Insert data

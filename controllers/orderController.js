@@ -3,11 +3,22 @@ const Car = require('../models/Car');
 
 exports.createOrder = async (req, res) => {
   try {
-    const order = new Order(req.body);
+    const car = await Car.findOne({ vin: req.body.vin });
+    if (!car) {
+      return res.status(404).json({ message: 'Car not found' });
+    }
+
+    if (!car.available) {
+      return res.status(400).json({ message: 'Car is no longer available for reservation.' });
+    }
+
+    const order = new Order({ ...req.body, status: 'pending' });
     await order.save();
+
     res.status(201).json(order);
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    console.error(err);
+    res.status(500).json({ message: err.message });
   }
 };
 
