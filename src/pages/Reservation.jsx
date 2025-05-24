@@ -17,6 +17,7 @@ const Reservation = () => {
     startDate: '',
     duration: 1,
   });
+  const [formErrors, setFormErrors] = useState({});
   const [total, setTotal] = useState(0);
   const [isFormValid, setIsFormValid] = useState(false);
 
@@ -27,8 +28,9 @@ const Reservation = () => {
       return;
     }
 
-    axios.get(`http://localhost:5000/api/cars/${vin}`)
-      .then(res => {
+    axios
+      .get(`http://localhost:5000/api/cars/${vin}`)
+      .then((res) => {
         setCar(res.data);
         const savedData = localStorage.getItem(`reservation_${vin}`);
         if (savedData) {
@@ -49,19 +51,41 @@ const Reservation = () => {
 
   // Validate form
   useEffect(() => {
-    const { name, phone, email, license, startDate, duration } = formData;
-    if (name && phone && email && license && startDate && duration > 0) {
-      setIsFormValid(true);
-    } else {
-      setIsFormValid(false);
-    }
+    const errors = validateForm(formData);
+    setFormErrors(errors);
+    setIsFormValid(Object.keys(errors).length === 0);
   }, [formData]);
 
   // Input change handler
   const handleChange = (e) => {
-    const newFormData = { ...formData, [e.target.name]: e.target.value };
-    setFormData(newFormData);
-    localStorage.setItem(`reservation_${vin}`, JSON.stringify(newFormData));
+    const { name, value } = e.target;
+    const updatedFormData = { ...formData, [name]: value };
+    setFormData(updatedFormData);
+    localStorage.setItem(`reservation_${vin}`, JSON.stringify(updatedFormData));
+  };
+
+  // Form validation logic
+  const validateForm = (data) => {
+    const errors = {};
+    const nameRegex = /^[a-zA-Z\s]{3,}$/; // Name: at least 3 letters/spaces
+    const phoneRegex = /^\d{10}$/; // Phone: exactly 10 digits
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email format
+    const licenseRegex = /^[A-Z0-9]{6,}$/; // License: alphanumeric, 6+ chars
+
+    if (!nameRegex.test(data.name)) {
+      errors.name = 'Name must contain only letters and at least 3 characters.';
+    }
+    if (!phoneRegex.test(data.phone)) {
+      errors.phone = 'Phone number must be exactly 10 digits.';
+    }
+    if (!emailRegex.test(data.email)) {
+      errors.email = 'Invalid email format.';
+    }
+    if (!licenseRegex.test(data.license)) {
+      errors.license = 'License must be at least 6 alphanumeric characters.';
+    }
+
+    return errors;
   };
 
   // Form submission
@@ -70,16 +94,17 @@ const Reservation = () => {
     const order = {
       vin: car.vin,
       ...formData,
-      total
+      total,
     };
 
-    axios.post('http://localhost:5000/api/orders', order)
-      .then(response => {
+    axios
+      .post('http://localhost:5000/api/orders', order)
+      .then((response) => {
         toast.success('Reservation confirmed!');
         localStorage.removeItem(`reservation_${vin}`);
         navigate(`/confirmation/${response.data._id}`);
       })
-      .catch(error => {
+      .catch((error) => {
         const msg = error.response?.data?.message || 'Failed to reserve car!';
         toast.error(msg);
       });
@@ -95,9 +120,7 @@ const Reservation = () => {
   }
 
   if (!car) {
-    return (
-      <div className="text-center text-lg mt-10">Loading car details...</div>
-    );
+    return <div className="text-center text-lg mt-10">Loading car details...</div>;
   }
 
   if (!car.available) {
@@ -131,25 +154,103 @@ const Reservation = () => {
 
       {/* Reservation form */}
       <form onSubmit={handleSubmit} className="space-y-4">
-        <input type="text" name="name" placeholder="Your Name" value={formData.name} onChange={handleChange} required className="w-full p-3 border rounded" />
-        <input type="tel" name="phone" placeholder="Phone Number" value={formData.phone} onChange={handleChange} required className="w-full p-3 border rounded" />
-        <input type="email" name="email" placeholder="Email Address" value={formData.email} onChange={handleChange} required className="w-full p-3 border rounded" />
-        <input type="text" name="license" placeholder="Driver's License Number" value={formData.license} onChange={handleChange} required className="w-full p-3 border rounded" />
-        <input type="date" name="startDate" value={formData.startDate} onChange={handleChange} required className="w-full p-3 border rounded" />
-        <input type="number" name="duration" min="1" value={formData.duration} onChange={handleChange} required className="w-full p-3 border rounded" />
+        {/* Name Input */}
+        <div>
+          <input
+            type="text"
+            name="name"
+            placeholder="Your Name"
+            value={formData.name}
+            onChange={handleChange}
+            className="w-full p-3 border rounded"
+          />
+          {formErrors.name && <p className="text-red-500 text-sm">{formErrors.name}</p>}
+        </div>
 
+        {/* Phone Input */}
+        <div>
+          <input
+            type="tel"
+            name="phone"
+            placeholder="Phone Number"
+            value={formData.phone}
+            onChange={handleChange}
+            className="w-full p-3 border rounded"
+          />
+          {formErrors.phone && <p className="text-red-500 text-sm">{formErrors.phone}</p>}
+        </div>
+
+        {/* Email Input */}
+        <div>
+          <input
+            type="email"
+            name="email"
+            placeholder="Email Address"
+            value={formData.email}
+            onChange={handleChange}
+            className="w-full p-3 border rounded"
+          />
+          {formErrors.email && <p className="text-red-500 text-sm">{formErrors.email}</p>}
+        </div>
+
+        {/* License Input */}
+        <div>
+          <input
+            type="text"
+            name="license"
+            placeholder="Driver's License Number"
+            value={formData.license}
+            onChange={handleChange}
+            className="w-full p-3 border rounded"
+          />
+          {formErrors.license && <p className="text-red-500 text-sm">{formErrors.license}</p>}
+        </div>
+
+        {/* Start Date Input */}
+        <div>
+          <input
+            type="date"
+            name="startDate"
+            value={formData.startDate}
+            onChange={handleChange}
+            className="w-full p-3 border rounded"
+          />
+        </div>
+
+        {/* Duration Input */}
+        <div>
+          <input
+            type="number"
+            name="duration"
+            min="1"
+            value={formData.duration}
+            onChange={handleChange}
+            className="w-full p-3 border rounded"
+          />
+        </div>
+
+        {/* Total Price */}
         <div className="text-xl font-bold text-yellow-400 mt-4 mb-2">
           Total: <span className="text-white">AU${total}</span>
         </div>
 
-
-        <button type="submit" disabled={!isFormValid}
-          className={`w-full py-3 text-white rounded ${isFormValid ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-400 cursor-not-allowed'}`}>
+        {/* Submit Button */}
+        <button
+          type="submit"
+          disabled={!isFormValid}
+          className={`w-full py-3 text-white rounded ${
+            isFormValid ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-400 cursor-not-allowed'
+          }`}
+        >
           Confirm Reservation
         </button>
 
-        <button type="button" onClick={() => navigate('/')}
-          className="w-full py-3 bg-gray-300 text-black rounded hover:bg-gray-400 transition">
+        {/* Cancel Button */}
+        <button
+          type="button"
+          onClick={() => navigate('/')}
+          className="w-full py-3 bg-gray-300 text-black rounded hover:bg-gray-400 transition"
+        >
           Cancel
         </button>
       </form>

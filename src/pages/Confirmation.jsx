@@ -31,7 +31,7 @@ const Confirmation = () => {
       </p>
 
       {order && (
-        <div className="text-left mb-6 border p-4 rounded shadow">
+        <div className="text-left mb-6 bg-white border p-4 rounded shadow">
           <p><strong>Name:</strong> {order.name}</p>
           <p><strong>Phone:</strong> {order.phone}</p>
           <p><strong>Email:</strong> {order.email}</p>
