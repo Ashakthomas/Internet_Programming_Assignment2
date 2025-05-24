@@ -28,8 +28,7 @@ const Reservation = () => {
       return;
     }
 
-    axios
-      .get(`http://localhost:5000/api/cars/${vin}`)
+   axios.get(`https://internet-programming-assignment2.onrender.com/api/cars/${vin}`)
       .then((res) => {
         setCar(res.data);
         const savedData = localStorage.getItem(`reservation_${vin}`);
@@ -97,8 +96,8 @@ const Reservation = () => {
       total,
     };
 
-    axios
-      .post('http://localhost:5000/api/orders', order)
+   axios.post('https://internet-programming-assignment2.onrender.com/api/orders', order)
+
       .then((response) => {
         toast.success('Reservation confirmed!');
         localStorage.removeItem(`reservation_${vin}`);

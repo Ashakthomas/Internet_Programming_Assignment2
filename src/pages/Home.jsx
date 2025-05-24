@@ -14,8 +14,8 @@ const Home = () => {
   const [selectedBrand, setSelectedBrand] = useState(''); // ⬅️ NEW
 
   useEffect(() => {
-    axios
-      .get('http://localhost:5000/api/cars')
+   axios.get('https://internet-programming-assignment2.onrender.com/api/cars')
+
       .then((response) => {
         const data = response.data;
         setCars(data);

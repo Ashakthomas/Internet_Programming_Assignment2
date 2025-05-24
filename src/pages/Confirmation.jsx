@@ -9,7 +9,8 @@ const Confirmation = () => {
 
   useEffect(() => {
     // Confirm the order via PUT request
-    axios.put(`http://localhost:5000/api/orders/confirm/${id}`)
+   axios.put(`https://internet-programming-assignment2.onrender.com/api/orders/confirm/${id}`)
+
       .then(response => {
         setOrder(response.data.order);
         setMessage(response.data.message);
